@@ -20,7 +20,7 @@ class PostsProvider extends InheritedWidget {
 
   static PostsProvider of(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<PostsProvider>();
-    if (result == null) return result!;
+    if (result != null) return result;
     throw Exception();
   }
 

@@ -20,7 +20,10 @@ class _PostScreenState extends State<PostScreen> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    PostsProvider.of(context).getPosts();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      PostsProvider.of(context).getPosts();
+
+    });
     _initialTimer();
   }
 

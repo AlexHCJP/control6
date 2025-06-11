@@ -18,12 +18,19 @@ class _UpdateScreenState extends State<UpdateScreen> {
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController(
-      text: ProfileProvider.of(context).profile?.firstName,
-    );
-    _lastNameController = TextEditingController(
-      text: ProfileProvider.of(context).profile?.lastName,
-    );
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _firstNameController.value = TextEditingValue(
+        text: ProfileProvider.of(context).profile?.firstName ?? '',
+      );
+      _lastNameController.value = TextEditingValue(
+        text: ProfileProvider.of(context).profile?.lastName ?? '',
+      );
+    });
+
+
   }
 
   @override

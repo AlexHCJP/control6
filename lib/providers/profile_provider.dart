@@ -22,7 +22,7 @@ class ProfileProvider extends InheritedWidget {
   static ProfileProvider of(BuildContext context) {
     final result = context
         .dependOnInheritedWidgetOfExactType<ProfileProvider>();
-    if (result == null) return result!;
+    if (result != null) return result;
     throw Exception();
   }
 
