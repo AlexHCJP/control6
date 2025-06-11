@@ -9,12 +9,15 @@ class ProfileProvider extends InheritedWidget {
     required this.profile,
     required this.login,
     required this.update,
+    required this.logout,
   });
 
   final ProfileModel? profile;
   final Future<void> Function(String email) login;
   final Future<void> Function(String email, String firstName, String lastName)
   update;
+
+  final VoidCallback logout;
 
   static ProfileProvider of(BuildContext context) {
     final result = context

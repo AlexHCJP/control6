@@ -28,9 +28,16 @@ class _ProfileScopeState extends State<ProfileScope> {
     setState(() {});
   }
 
+
+  void logout() {
+    profile = null;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProfileProvider(
+      logout: logout,
       profile: profile,
       login: login,
       update: update,

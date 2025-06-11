@@ -19,6 +19,15 @@ class _PostScopeState extends State<PostScope> {
   List<PostModel> posts = [];
   DateTime? dateTime;
 
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if(ProfileProvider.of(context).profile == null) {
+      _clear();
+    }
+  }
+
   Future<void> getMessage() async {
     final String? email = ProfileProvider.of(context).profile?.email;
 
@@ -52,6 +61,11 @@ class _PostScopeState extends State<PostScope> {
     await ApiService().createPost(email, message);
   }
 
+
+  void _clear() {
+    posts = [];
+    dateTime = null;
+  }
 
   @override
   Widget build(BuildContext context) {

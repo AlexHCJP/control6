@@ -56,10 +56,18 @@ class _PostScreenState extends State<PostScreen> {
     Navigator.of(context).pushNamed(AppRoutes.updateProfile);
   }
 
+  void _logout() {
+    ProfileProvider.of(context).logout();
+    Navigator.of(context).pushReplacementNamed(AppRoutes.auth);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: _logout,
+        ),
         title: Text('Посты'),
         actions: [
           IconButton(onPressed: _subscribe, icon: Icon(Icons.person_add)),
