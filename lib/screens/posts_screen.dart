@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:control6/core/routing.dart';
 import 'package:control6/providers/posts_provider.dart';
 import 'package:control6/providers/profile_provider.dart';
 import 'package:control6/widgets/post_card_widget.dart';
@@ -36,14 +37,24 @@ class _PostScreenState extends State<PostScreen> {
     });
   }
 
-  void _subscribe() {}
+  void _subscribe() {
+    Navigator.of(context).pushNamed(AppRoutes.subscribe);
+  }
 
   void _send() {
     if(_controller.value.text.isEmpty) return;
-    PostsProvider.of(context).createPost(_controller.value.text);
+
+    try {
+      PostsProvider.of(context).createPost(_controller.value.text);
+      _controller.clear();
+    } catch(err) {
+      print(err);
+    }
   }
 
-  void _update() {}
+  void _update() {
+    Navigator.of(context).pushNamed(AppRoutes.updateProfile);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -32,7 +32,10 @@ class _PostScopeState extends State<PostScope> {
   Future<void> getPostsByDateTime() async {
     final String? email = ProfileProvider.of(context).profile?.email;
 
-    if (email == null || dateTime == null) return;
+    if (email == null) return;
+
+
+    if(dateTime == null) return getMessage();
 
     final newPosts = await ApiService().getPostsByDateTime(email, dateTime!);
 

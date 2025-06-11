@@ -27,6 +27,8 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _login() async {
+    if(_controller.value.text.isEmpty) return;
+
     try {
       await ProfileProvider.of(context).login(_controller.value.text);
       if (!mounted) return;
