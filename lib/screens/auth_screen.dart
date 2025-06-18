@@ -1,8 +1,9 @@
-import 'package:control6/providers/profile_provider.dart';
+import 'package:control6/states/profile_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/routing.dart';
+import '../providers/profile_scope.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -27,10 +28,10 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _login() async {
-    if(_controller.value.text.isEmpty) return;
+    if (_controller.value.text.isEmpty) return;
 
     try {
-      await ProfileProvider.of(context).login(_controller.value.text);
+      await ProfileScope.of(context).login(_controller.value.text);
       if (!mounted) return;
       Navigator.of(context).pushReplacementNamed(AppRoutes.posts);
     } catch (err) {
@@ -48,7 +49,23 @@ class _AuthScreenState extends State<AuthScreen> {
           spacing: 16,
           children: [
             TextField(controller: _controller),
-            ElevatedButton(onPressed: _login, child: Text('Войти')),
+            Builder(
+              builder: (context) {
+                final state = ProfileScope.of(context).state;
+                return switch (state) {
+                  ProfileInitialState() ||
+                  ProfileExceptionState() ||
+                  ProfileLoadedState() => ElevatedButton(
+                    onPressed: _login,
+                    child: Text('Войти'),
+                  ),
+                  ProfileLoadingState() => ElevatedButton(
+                    onPressed: () {},
+                    child: CupertinoActivityIndicator(),
+                  ),
+                };
+              },
+            ),
           ],
         ),
       ),

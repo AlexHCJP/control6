@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProfileScope(
-      child: PostScope(
-        child: MaterialApp(
+        builder: (context) => PostScope(
+        builder: (context) => MaterialApp(
           initialRoute: AppRoutes.auth,
           routes: {
             AppRoutes.auth: (context) => AuthScreen(),

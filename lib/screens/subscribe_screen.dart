@@ -1,9 +1,10 @@
-import 'package:control6/providers/profile_provider.dart';
 import 'package:control6/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/routing.dart';
+import '../providers/profile_scope.dart';
+import '../states/profile_state.dart';
 
 class SubscribeScreen extends StatefulWidget {
   const SubscribeScreen({super.key});
@@ -28,17 +29,17 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
   }
 
   void _subscribe() async {
-    final email = ProfileProvider.of(context).profile?.email;
-
-    if(email == null) return;
-
-
-    try {
-      await ApiService().subscribe(email, _controller.value.text);
-      if (!mounted) return;
-      Navigator.of(context).pop();
-    } catch (err) {
-      print(err);
+    if (ProfileScope.of(context).state case ProfileLoadedState state) {
+      try {
+        await ApiService().subscribe(
+          state.profile.email,
+          _controller.value.text,
+        );
+        if (!mounted) return;
+        Navigator.of(context).pop();
+      } catch (err) {
+        print(err);
+      }
     }
   }
 

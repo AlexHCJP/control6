@@ -1,8 +1,7 @@
-import 'package:control6/providers/profile_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../core/routing.dart';
+import '../providers/profile_scope.dart';
+import '../states/profile_state.dart';
 
 class UpdateScreen extends StatefulWidget {
   const UpdateScreen({super.key});
@@ -21,15 +20,18 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback(_setData);
+  }
+
+  void _setData(_) {
+    if (ProfileScope.of(context).state case ProfileLoadedState state) {
       _firstNameController.value = TextEditingValue(
-        text: ProfileProvider.of(context).profile?.firstName ?? '',
+        text: state.profile.firstName ,
       );
       _lastNameController.value = TextEditingValue(
-        text: ProfileProvider.of(context).profile?.lastName ?? '',
+        text: state.profile.lastName ,
       );
-    });
-
+    }
 
   }
 
@@ -41,20 +43,19 @@ class _UpdateScreenState extends State<UpdateScreen> {
   }
 
   void _update() async {
-    final email = ProfileProvider.of(context).profile?.email;
 
-    if(email == null) return;
-
-    try {
-      await ProfileProvider.of(context).update(
-        email,
-        _firstNameController.value.text,
-        _lastNameController.value.text,
-      );
-      if (!mounted) return;
-      Navigator.of(context).pop();
-    } catch (err) {
-      print(err);
+    if (ProfileScope.of(context).state case ProfileLoadedState state) {
+      try {
+        await ProfileScope.of(context).update(
+          state.profile.email,
+          _firstNameController.value.text,
+          _lastNameController.value.text,
+        );
+        if (!mounted) return;
+        Navigator.of(context).pop();
+      } catch (err) {
+        print(err);
+      }
     }
   }
 
